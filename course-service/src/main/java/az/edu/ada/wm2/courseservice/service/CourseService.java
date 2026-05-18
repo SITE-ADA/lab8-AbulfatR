@@ -96,6 +96,7 @@ public class CourseService {
                 savedEnrollment.getId(),
                 savedEnrollment.getCourseId(),
                 savedEnrollment.getStudentId(),
+                savedEnrollment.getEnrollmentDate(),
                 "Student enrolled successfully."
         );
     }
