@@ -33,4 +33,7 @@ public class Course {
 
     @Column(nullable = false)
     private Integer credits;
+
+    @Column(name = "prerequisite_course_id")
+    private Long prerequisiteCourseId;
 }
