@@ -22,38 +22,38 @@ public class StudentService {
                 .email(requestDto.getEmail())
                 .age(requestDto.getAge())
                 .build();
-
-        Student savedStudent = studentRepository.save(student);
-        return toResponseDto(savedStudent);
+        return toResponseDto(studentRepository.save(student));
     }
 
     public List<StudentResponseDto> getAllStudents() {
-        return studentRepository.findAll()
-                .stream()
+        return studentRepository.findAll().stream()
                 .map(this::toResponseDto)
                 .toList();
     }
 
     public StudentResponseDto getStudentById(Long id) {
-        Student student = findStudentOrThrow(id);
-        return toResponseDto(student);
+        return toResponseDto(findStudentOrThrow(id));
     }
 
     public StudentResponseDto updateStudent(Long id, StudentRequestDto requestDto) {
-        Student existingStudent = findStudentOrThrow(id);
-
-        existingStudent.setFirstName(requestDto.getFirstName());
-        existingStudent.setLastName(requestDto.getLastName());
-        existingStudent.setEmail(requestDto.getEmail());
-        existingStudent.setAge(requestDto.getAge());
-
-        Student updatedStudent = studentRepository.save(existingStudent);
-        return toResponseDto(updatedStudent);
+        Student existing = findStudentOrThrow(id);
+        existing.setFirstName(requestDto.getFirstName());
+        existing.setLastName(requestDto.getLastName());
+        existing.setEmail(requestDto.getEmail());
+        existing.setAge(requestDto.getAge());
+        return toResponseDto(studentRepository.save(existing));
     }
 
     public void deleteStudent(Long id) {
-        Student student = findStudentOrThrow(id);
-        studentRepository.delete(student);
+        studentRepository.delete(findStudentOrThrow(id));
+    }
+
+    public List<StudentResponseDto> searchByName(String name) {
+        return studentRepository
+                .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(name, name)
+                .stream()
+                .map(this::toResponseDto)
+                .toList();
     }
 
     private Student findStudentOrThrow(Long id) {
